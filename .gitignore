@@ -37,5 +37,6 @@ dist/
 # Shadcn Registry
 public/r/
 
-!supabase/functions/.env
+supabase/functions/.env
+supabase/functions/.env.development
 .claude/settings.local.json
