@@ -13,6 +13,8 @@ import { AsideSection } from "../misc/AsideSection";
 import type { Contact } from "../types";
 import { ContactMergeButton } from "./ContactMergeButton";
 import { ExportVCardButton } from "./ExportVCardButton";
+import { ConversationCreate } from "../conversations/ConversationCreate";
+import { ConversationsIterator } from "../conversations/ConversationsList";
 
 export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
   const record = useRecordContext<Contact>();
@@ -50,6 +52,18 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
           <TasksIterator />
         </ReferenceManyField>
         <AddTask />
+      </AsideSection>
+
+      <AsideSection title="Conversations">
+        <ReferenceManyField
+          target="contact_id"
+          reference="conversations"
+          sort={{ field: "date", order: "DESC" }}
+          perPage={20}
+        >
+          <ConversationsIterator />
+        </ReferenceManyField>
+        <ConversationCreate />
       </AsideSection>
 
       {link !== "edit" && (

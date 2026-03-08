@@ -1,5 +1,5 @@
 import { endOfYesterday, startOfMonth, startOfWeek, subMonths } from "date-fns";
-import { CheckSquare, Clock, Tag, TrendingUp, Users } from "lucide-react";
+import { CheckSquare, Clock, Radio, Tag, TrendingUp, Users } from "lucide-react";
 import { useGetIdentity, useGetList, useListContext } from "ra-core";
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { Badge } from "@/components/ui/badge";
@@ -121,6 +121,18 @@ export const ContactListFilter = () => {
         />
       </FilterCategory>
 
+      <FilterCategory icon={<Radio />} label="Lead Source">
+        {leadSourceOptions.map((source) => (
+          <ToggleFilterButton
+            key={source.value}
+            className="w-auto md:w-full justify-between h-10 md:h-8"
+            label={source.label}
+            value={{ lead_source: source.value }}
+            size={isMobile ? "lg" : undefined}
+          />
+        ))}
+      </FilterCategory>
+
       <FilterCategory icon={<Users />} label="Account Manager">
         <ToggleFilterButton
           className="w-full justify-between h-10 md:h-8"
@@ -132,6 +144,16 @@ export const ContactListFilter = () => {
     </ResponsiveFilters>
   );
 };
+
+const leadSourceOptions = [
+  { value: "tiktok", label: "TikTok LIVE" },
+  { value: "workshop", label: "Workshop" },
+  { value: "youtube", label: "YouTube" },
+  { value: "referral", label: "Referral" },
+  { value: "linkedin", label: "LinkedIn" },
+  { value: "cold_outreach", label: "Cold Outreach" },
+  { value: "other", label: "Other" },
+];
 
 export const ContactListFilterSummary = () => {
   const { noteStatuses } = useConfigurationContext();

@@ -61,6 +61,16 @@ const DealLinkedToInputs = () => {
   );
 };
 
+const leadSourceChoices = [
+  { value: "tiktok", label: "TikTok LIVE" },
+  { value: "workshop", label: "Workshop" },
+  { value: "youtube", label: "YouTube" },
+  { value: "referral", label: "Referral" },
+  { value: "linkedin", label: "LinkedIn" },
+  { value: "cold_outreach", label: "Cold Outreach" },
+  { value: "other", label: "Other" },
+];
+
 const DealMiscInputs = () => {
   const { dealStages, dealCategories } = useConfigurationContext();
   return (
@@ -71,6 +81,21 @@ const DealMiscInputs = () => {
         source="category"
         label="Category"
         choices={dealCategories}
+        optionText="label"
+        optionValue="value"
+        helperText={false}
+      />
+      <ReferenceInput source="product_id" reference="products">
+        <SelectInput
+          label="Product"
+          optionText="name"
+          helperText={false}
+        />
+      </ReferenceInput>
+      <SelectInput
+        source="lead_source"
+        label="Lead Source"
+        choices={leadSourceChoices}
         optionText="label"
         optionValue="value"
         helperText={false}
@@ -92,9 +117,15 @@ const DealMiscInputs = () => {
         choices={dealStages}
         optionText="label"
         optionValue="value"
-        defaultValue="opportunity"
+        defaultValue="new-inquiry"
         helperText={false}
         validate={required()}
+      />
+      <TextInput
+        source="won_lost_reason"
+        label="Won/Lost Reason"
+        multiline
+        helperText={false}
       />
     </div>
   );

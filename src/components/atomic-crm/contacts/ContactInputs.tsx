@@ -175,10 +175,44 @@ const ContactPersonalInformationInputs = () => {
 
 const personalInfoTypes = [{ id: "Work" }, { id: "Home" }, { id: "Other" }];
 
+const leadSourceChoices = [
+  { value: "tiktok", label: "TikTok LIVE" },
+  { value: "workshop", label: "Workshop" },
+  { value: "youtube", label: "YouTube" },
+  { value: "referral", label: "Referral" },
+  { value: "linkedin", label: "LinkedIn" },
+  { value: "cold_outreach", label: "Cold Outreach" },
+  { value: "other", label: "Other" },
+];
+
+const contactTypeChoices = [
+  { value: "lead", label: "Lead" },
+  { value: "student", label: "Student" },
+  { value: "client", label: "Client" },
+  { value: "corporate", label: "Corporate" },
+  { value: "alumni", label: "Alumni" },
+];
+
 const ContactMiscInputs = () => {
   return (
     <div className="flex flex-col gap-4">
       <h6 className="text-lg font-semibold">Misc</h6>
+      <SelectInput
+        source="lead_source"
+        label="Lead Source"
+        choices={leadSourceChoices}
+        optionText="label"
+        optionValue="value"
+        helperText={false}
+      />
+      <SelectInput
+        source="contact_type"
+        label="Contact Type"
+        choices={contactTypeChoices}
+        optionText="label"
+        optionValue="value"
+        helperText={false}
+      />
       <TextInput
         source="background"
         label="Background info (bio, how you met, etc)"

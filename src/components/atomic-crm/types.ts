@@ -100,6 +100,8 @@ export type Contact = {
   phone_jsonb: PhoneNumberAndType[];
   nb_tasks?: number;
   company_name?: string;
+  lead_source?: string | null;
+  contact_type?: string | null;
 } & Pick<RaRecord, "id">;
 
 export type ContactNote = {
@@ -125,6 +127,36 @@ export type Deal = {
   expected_closing_date: string;
   sales_id: Identifier;
   index: number;
+  product_id?: Identifier | null;
+  lead_source?: string | null;
+  won_lost_reason?: string | null;
+} & Pick<RaRecord, "id">;
+
+export type Product = {
+  name: string;
+  category: string;
+  price: number;
+  is_active: boolean;
+  created_at: string;
+} & Pick<RaRecord, "id">;
+
+export type ContactProduct = {
+  contact_id: Identifier;
+  product_id: Identifier;
+  type: "purchased" | "interested";
+  created_at: string;
+} & Pick<RaRecord, "id">;
+
+export type Conversation = {
+  contact_id: Identifier;
+  date: string;
+  channel: string;
+  summary?: string;
+  outcome?: string;
+  next_step?: string;
+  task_id?: Identifier | null;
+  sales_id?: Identifier | null;
+  created_at: string;
 } & Pick<RaRecord, "id">;
 
 export type DealNote = {
