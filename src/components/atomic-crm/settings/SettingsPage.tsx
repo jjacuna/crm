@@ -1,7 +1,7 @@
-import { RotateCcw, Save } from "lucide-react";
+import { Bot, Eye, EyeOff, RotateCcw, Save } from "lucide-react";
 import type { RaRecord } from "ra-core";
 import { EditBase, Form, useGetList, useInput, useNotify } from "ra-core";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,6 +18,7 @@ import {
   type ConfigurationContextValue,
 } from "../root/ConfigurationContext";
 import { defaultConfiguration } from "../root/defaultConfiguration";
+import { getApiKey, setApiKey } from "../chatbot/useChatbot";
 
 const SECTIONS = [
   { id: "branding", label: "Branding" },
@@ -25,6 +26,7 @@ const SECTIONS = [
   { id: "deals", label: "Deals" },
   { id: "notes", label: "Notes" },
   { id: "tasks", label: "Tasks" },
+  { id: "ai-chatbot", label: "AI Chatbot" },
 ];
 
 /** Ensure every item in a { value, label } array has a value (slug from label). */
@@ -356,6 +358,9 @@ const SettingsFormFields = () => {
             </ArrayInput>
           </CardContent>
         </Card>
+
+        {/* AI Chatbot */}
+        <AiChatbotSettings />
       </div>
 
       {/* Sticky save button */}
@@ -396,6 +401,87 @@ const SettingsFormFields = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+/**
+ * AI Chatbot settings section.
+ * This is outside the main CRM config form because the API key is stored
+ * in localStorage (not in the configuration table) for security.
+ */
+const AiChatbotSettings = () => {
+  const [apiKeyValue, setApiKeyValue] = useState(getApiKey);
+  const [showKey, setShowKey] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = () => {
+    setApiKey(apiKeyValue);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  return (
+    <Card id="ai-chatbot">
+      <CardContent className="space-y-4">
+        <div className="flex items-center gap-2">
+          <Bot className="h-5 w-5 text-muted-foreground" />
+          <h2 className="text-xl font-semibold text-muted-foreground">
+            AI Chatbot
+          </h2>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          The AI chatbot uses OpenRouter to process natural language commands
+          for managing your CRM data. Enter your API key below.
+        </p>
+        <div className="space-y-2">
+          <label
+            htmlFor="openrouter-api-key"
+            className="text-sm font-medium text-foreground"
+          >
+            OpenRouter API Key
+          </label>
+          <div className="flex items-center gap-2">
+            <div className="relative flex-1">
+              <input
+                id="openrouter-api-key"
+                type={showKey ? "text" : "password"}
+                value={apiKeyValue}
+                onChange={(e) => setApiKeyValue(e.target.value)}
+                placeholder="sk-or-..."
+                className="w-full px-3 py-2 pr-10 text-sm bg-background border rounded-md outline-none focus:ring-1 focus:ring-ring"
+              />
+              <button
+                type="button"
+                onClick={() => setShowKey(!showKey)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showKey ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
+            <Button type="button" size="sm" onClick={handleSave}>
+              {saved ? "Saved!" : "Save Key"}
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground/70">
+            Get your API key from{" "}
+            <a
+              href="https://openrouter.ai/keys"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-foreground"
+            >
+              openrouter.ai/keys
+            </a>
+            . The key is stored in your browser&apos;s local storage and never
+            sent to our servers.
+          </p>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
