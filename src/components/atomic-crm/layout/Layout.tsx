@@ -5,6 +5,7 @@ import { Error } from "@/components/admin/error";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { useConfigurationLoader } from "../root/useConfigurationLoader";
+import { ChatWidget } from "../chatbot/ChatWidget";
 import Header from "./Header";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
@@ -20,6 +21,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         </ErrorBoundary>
       </main>
       <Notification />
+      <ChatWidget />
     </>
   );
 };
