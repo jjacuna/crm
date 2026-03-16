@@ -102,6 +102,8 @@ export type Contact = {
   company_name?: string;
   lead_source?: string | null;
   contact_type?: string | null;
+  funnel_stage?: string | null;
+  funnel_stage_changed_at?: string | null;
 } & Pick<RaRecord, "id">;
 
 export type ContactNote = {
@@ -155,6 +157,24 @@ export type Conversation = {
   outcome?: string;
   next_step?: string;
   task_id?: Identifier | null;
+  sales_id?: Identifier | null;
+  created_at: string;
+} & Pick<RaRecord, "id">;
+
+export type FunnelStage = {
+  name: string;
+  display_name: string;
+  sort_order: number;
+  created_at: string;
+} & Pick<RaRecord, "id">;
+
+export type ContactStageHistory = {
+  contact_id: Identifier;
+  from_stage?: string | null;
+  to_stage: string;
+  changed_at: string;
+  changed_by?: string | null;
+  notes?: string | null;
   sales_id?: Identifier | null;
   created_at: string;
 } & Pick<RaRecord, "id">;

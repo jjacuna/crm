@@ -5,6 +5,14 @@ import { DateField } from "@/components/admin/date-field";
 import { SaleName } from "../sales/SaleName";
 import type { Contact } from "../types";
 
+const funnelStageLabels: Record<string, string> = {
+  lead: "Lead",
+  workshop_attendee: "Workshop Attendee",
+  community_member: "Community Member",
+  ai_consultant: "AI Consultant",
+  coaching_client: "Coaching Client",
+};
+
 export const ContactBackgroundInfo = () => {
   const record = useRecordContext<Contact>();
 
@@ -21,6 +29,16 @@ export const ContactBackgroundInfo = () => {
           ) : null
         }
       />
+
+      {record.funnel_stage && (
+        <div className="text-muted-foreground md:py-0.5">
+          <span className="text-sm">Funnel stage:</span>{" "}
+          <span className="text-sm font-medium text-foreground">
+            {funnelStageLabels[record.funnel_stage] ?? record.funnel_stage}
+          </span>
+        </div>
+      )}
+
       <div className="text-muted-foreground md:py-0.5">
         <span className="text-sm">Added on</span>{" "}
         <DateField

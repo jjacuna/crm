@@ -193,6 +193,14 @@ const contactTypeChoices = [
   { value: "alumni", label: "Alumni" },
 ];
 
+const funnelStageChoices = [
+  { value: "lead", label: "Lead" },
+  { value: "workshop_attendee", label: "Workshop Attendee" },
+  { value: "community_member", label: "Community Member" },
+  { value: "ai_consultant", label: "AI Consultant" },
+  { value: "coaching_client", label: "Coaching Client" },
+];
+
 const ContactMiscInputs = () => {
   return (
     <div className="flex flex-col gap-4">
@@ -209,6 +217,14 @@ const ContactMiscInputs = () => {
         source="contact_type"
         label="Contact Type"
         choices={contactTypeChoices}
+        optionText="label"
+        optionValue="value"
+        helperText={false}
+      />
+      <SelectInput
+        source="funnel_stage"
+        label="Funnel Stage"
+        choices={funnelStageChoices}
         optionText="label"
         optionValue="value"
         helperText={false}

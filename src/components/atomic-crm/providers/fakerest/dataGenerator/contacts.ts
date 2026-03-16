@@ -96,6 +96,35 @@ export const generateContacts = (db: Db, size = 500): Required<Contact>[] => {
       sales_id: company.sales_id,
       nb_tasks: 0,
       linkedin_url: null,
+      lead_source: random.arrayElement([
+        "tiktok",
+        "workshop",
+        "youtube",
+        "referral",
+        "linkedin",
+        "cold_outreach",
+        "other",
+        null,
+      ]),
+      contact_type: random.arrayElement([
+        "lead",
+        "student",
+        "client",
+        "corporate",
+        "alumni",
+        null,
+      ]),
+      funnel_stage: random.arrayElement([
+        "lead",
+        "lead",
+        "lead",
+        "workshop_attendee",
+        "workshop_attendee",
+        "community_member",
+        "ai_consultant",
+        "coaching_client",
+      ]),
+      funnel_stage_changed_at: first_seen,
     };
   });
 };

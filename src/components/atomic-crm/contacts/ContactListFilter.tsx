@@ -1,5 +1,13 @@
 import { endOfYesterday, startOfMonth, startOfWeek, subMonths } from "date-fns";
-import { CheckSquare, Clock, Radio, Tag, TrendingUp, Users } from "lucide-react";
+import {
+  CheckSquare,
+  Clock,
+  Funnel,
+  Radio,
+  Tag,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 import { useGetIdentity, useGetList, useListContext } from "ra-core";
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { Badge } from "@/components/ui/badge";
@@ -133,6 +141,18 @@ export const ContactListFilter = () => {
         ))}
       </FilterCategory>
 
+      <FilterCategory icon={<Funnel />} label="Funnel Stage">
+        {funnelStageOptions.map((stage) => (
+          <ToggleFilterButton
+            key={stage.value}
+            className="w-auto md:w-full justify-between h-10 md:h-8"
+            label={stage.label}
+            value={{ funnel_stage: stage.value }}
+            size={isMobile ? "lg" : undefined}
+          />
+        ))}
+      </FilterCategory>
+
       <FilterCategory icon={<Users />} label="Account Manager">
         <ToggleFilterButton
           className="w-full justify-between h-10 md:h-8"
@@ -153,6 +173,14 @@ const leadSourceOptions = [
   { value: "linkedin", label: "LinkedIn" },
   { value: "cold_outreach", label: "Cold Outreach" },
   { value: "other", label: "Other" },
+];
+
+const funnelStageOptions = [
+  { value: "lead", label: "Lead" },
+  { value: "workshop_attendee", label: "Workshop Attendee" },
+  { value: "community_member", label: "Community Member" },
+  { value: "ai_consultant", label: "AI Consultant" },
+  { value: "coaching_client", label: "Coaching Client" },
 ];
 
 export const ContactListFilterSummary = () => {
@@ -252,6 +280,15 @@ export const ContactListFilterSummary = () => {
         label={"With pending tasks"}
         value={{ "nb_tasks@gt": 0 }}
       />
+
+      {funnelStageOptions.map((stage) => (
+        <ActiveFilterButton
+          key={stage.value}
+          className="w-auto justify-between h-8"
+          label={stage.label}
+          value={{ funnel_stage: stage.value }}
+        />
+      ))}
 
       <ActiveFilterButton
         className="w-auto justify-between h-8"
