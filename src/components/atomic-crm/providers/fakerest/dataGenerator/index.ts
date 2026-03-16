@@ -3,6 +3,8 @@ import { generateContactNotes } from "./contactNotes";
 import { generateContacts } from "./contacts";
 import { generateDealNotes } from "./dealNotes";
 import { generateDeals } from "./deals";
+import { generatePayments } from "./payments";
+import { generateSubscriptions } from "./subscriptions";
 import { finalize } from "./finalize";
 import { generatePayments } from "./payments";
 import { generateSales } from "./sales";

@@ -104,15 +104,16 @@ export const generateContacts = (db: Db, size = 500): Required<Contact>[] => {
         "linkedin",
         "cold_outreach",
         "other",
-        null,
       ]),
       contact_type: random.arrayElement([
         "lead",
+        "lead",
+        "lead",
+        "student",
         "student",
         "client",
         "corporate",
         "alumni",
-        null,
       ]),
       funnel_stage: random.arrayElement([
         "lead",

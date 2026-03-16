@@ -10,6 +10,7 @@ import {
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 const OPENROUTER_MODEL = "google/gemini-2.5-flash-preview";
 const STORAGE_KEY = "crm_openrouter_api_key";
+const ENV_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY ?? "";
 
 export type ChatMessage = {
   id: string;
@@ -24,7 +25,7 @@ function generateId(): string {
 }
 
 export function getApiKey(): string {
-  return localStorage.getItem(STORAGE_KEY) ?? "";
+  return localStorage.getItem(STORAGE_KEY) || ENV_API_KEY || "";
 }
 
 export function setApiKey(key: string): void {
