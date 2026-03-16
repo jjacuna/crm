@@ -20,7 +20,9 @@ import contacts from "../contacts";
 import { Dashboard } from "../dashboard/Dashboard";
 import { MobileDashboard } from "../dashboard/MobileDashboard";
 import deals from "../deals";
+import payments from "../payments";
 import products from "../products";
+import subscriptions from "../subscriptions";
 import { Layout } from "../layout/Layout";
 import { MobileLayout } from "../layout/MobileLayout";
 import { SignupPage } from "../login/SignupPage";
@@ -247,6 +249,8 @@ const DesktopAdmin = (props: CoreAdminProps) => {
       <Resource name="contacts" {...contacts} />
       <Resource name="companies" {...companies} />
       <Resource name="products" {...products} />
+      <Resource name="payments" {...payments} />
+      <Resource name="subscriptions" {...subscriptions} />
       <Resource name="contact_notes" />
       <Resource name="deal_notes" />
       <Resource name="tasks" />
