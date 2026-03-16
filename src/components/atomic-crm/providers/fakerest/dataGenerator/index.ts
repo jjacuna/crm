@@ -1,14 +1,12 @@
 import { generateCompanies } from "./companies";
 import { generateContactNotes } from "./contactNotes";
-import { generateContacts } from "./contacts";
 import { generateDealNotes } from "./dealNotes";
 import { generateDeals } from "./deals";
-import { generatePayments } from "./payments";
-import { generateSubscriptions } from "./subscriptions";
 import { finalize } from "./finalize";
-import { generatePayments } from "./payments";
+import { realContacts } from "./realContacts";
+import { realPayments } from "./realPayments";
+import { realSubscriptions } from "./realSubscriptions";
 import { generateSales } from "./sales";
-import { generateSubscriptions } from "./subscriptions";
 import { generateTags } from "./tags";
 import { generateTasks } from "./tasks";
 import type { Db } from "./types";
@@ -18,13 +16,15 @@ export default (): Db => {
   db.sales = generateSales(db);
   db.tags = generateTags(db);
   db.companies = generateCompanies(db);
-  db.contacts = generateContacts(db);
+  // Use real contacts from Kit CSV data
+  db.contacts = realContacts as Db["contacts"];
   db.contact_notes = generateContactNotes(db);
   db.deals = generateDeals(db);
   db.deal_notes = generateDealNotes(db);
   db.tasks = generateTasks(db);
-  db.payments = generatePayments(db);
-  db.subscriptions = generateSubscriptions(db);
+  // Use real payments and subscriptions from Circle CSV data
+  db.payments = realPayments;
+  db.subscriptions = realSubscriptions;
   db.configuration = [
     {
       id: 1,
