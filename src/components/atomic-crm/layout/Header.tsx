@@ -24,6 +24,10 @@ const Header = () => {
     currentPath = "/deals";
   } else if (matchPath("/products/*", location.pathname)) {
     currentPath = "/products";
+  } else if (matchPath("/payments/*", location.pathname)) {
+    currentPath = "/payments";
+  } else if (matchPath("/subscriptions/*", location.pathname)) {
+    currentPath = "/subscriptions";
   } else {
     currentPath = false;
   }
@@ -76,6 +80,16 @@ const Header = () => {
                     label="Products"
                     to="/products"
                     isActive={currentPath === "/products"}
+                  />
+                  <NavigationTab
+                    label="Payments"
+                    to="/payments"
+                    isActive={currentPath === "/payments"}
+                  />
+                  <NavigationTab
+                    label="Subscriptions"
+                    to="/subscriptions"
+                    isActive={currentPath === "/subscriptions"}
                   />
                 </nav>
               </div>

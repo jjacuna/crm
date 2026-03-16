@@ -179,6 +179,39 @@ export type ContactStageHistory = {
   created_at: string;
 } & Pick<RaRecord, "id">;
 
+export type Payment = {
+  contact_id?: Identifier | null;
+  amount: number;
+  currency: string;
+  payment_type: "one_time" | "subscription" | "refund";
+  status: "succeeded" | "pending" | "failed" | "refunded" | "canceled";
+  description?: string;
+  stripe_payment_id?: string;
+  stripe_subscription_id?: string;
+  stripe_account?: "community" | "consulting";
+  product_id?: Identifier | null;
+  payment_date: string;
+  sales_id?: Identifier | null;
+  created_at: string;
+} & Pick<RaRecord, "id">;
+
+export type Subscription = {
+  contact_id?: Identifier | null;
+  stripe_subscription_id?: string;
+  stripe_account?: "community" | "consulting";
+  product_id?: Identifier | null;
+  plan_name?: string;
+  amount: number;
+  currency: string;
+  interval: "monthly" | "yearly";
+  status: "active" | "trial" | "past_due" | "canceled" | "ended";
+  start_date?: string;
+  current_period_end?: string;
+  canceled_at?: string;
+  sales_id?: Identifier | null;
+  created_at: string;
+} & Pick<RaRecord, "id">;
+
 export type DealNote = {
   deal_id: Identifier;
   text: string;
