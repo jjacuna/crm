@@ -254,6 +254,8 @@ const DesktopAdmin = (props: CoreAdminProps) => {
       <Resource name="tags" />
       <Resource name="contact_products" />
       <Resource name="conversations" />
+      <Resource name="payments" />
+      <Resource name="subscriptions" />
     </Admin>
   );
 };

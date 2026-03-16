@@ -242,6 +242,27 @@ export interface RAFile {
 
 export type AttachmentNote = RAFile;
 
+export type Payment = {
+  contact_id: Identifier;
+  amount: number;
+  payment_date: string;
+  payment_type: "one_time" | "subscription";
+  description: string;
+  created_at: string;
+} & Pick<RaRecord, "id">;
+
+export type Subscription = {
+  contact_id: Identifier;
+  plan_name: string;
+  status: "trial" | "active" | "canceled" | "past_due";
+  billing_interval: "monthly" | "yearly";
+  amount: number;
+  start_date: string;
+  end_date?: string | null;
+  canceled_at?: string | null;
+  created_at: string;
+} & Pick<RaRecord, "id">;
+
 export interface LabeledValue {
   value: string;
   label: string;
