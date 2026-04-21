@@ -1,0 +1,197 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id              String   @id @default(uuid())
+  firstName       String   @map("first_name")
+  lastName        String?  @map("last_name")
+  email           String   @unique
+  phone           String?
+  leadSource      String?  @map("lead_source")
+  contactType     String   @default("lead") @map("contact_type")
+  funnelStage     String   @default("lead") @map("funnel_stage")
+  status          String   @default("active")
+  leadScore       Int      @default(0) @map("lead_score")
+  stripeCustomerId String? @map("stripe_customer_id")
+  kitSubscriberId  String? @map("kit_subscriber_id")
+  tags            String[] @default([])
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  registrations   WorkshopRegistration[]
+  sessions        CoachingSession[]
+  payments        Payment[]
+  subscriptions   Subscription[]
+  activities      ActivityLog[]
+  knowledgeFile   ClientKnowledgeFile?
+  emailLogs       EmailLog[]
+
+  @@map("contacts")
+}
+
+model Workshop {
+  id              String   @id @default(uuid())
+  title           String
+  date            DateTime
+  zoomLink        String?  @map("zoom_link")
+  status          String   @default("upcoming")
+  maxCapacity     Int      @default(50) @map("max_capacity")
+  stripeProductId String?  @map("stripe_product_id")
+  priceCents      Int      @default(25000) @map("price_cents")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  registrations   WorkshopRegistration[]
+  emailLogs       EmailLog[]
+
+  @@map("workshops")
+}
+
+model WorkshopRegistration {
+  id              String   @id @default(uuid())
+  workshopId      String   @map("workshop_id")
+  contactId       String   @map("contact_id")
+  registeredAt    DateTime @default(now()) @map("registered_at")
+  paymentStatus   String   @default("pending") @map("payment_status")
+  stripePaymentId String?  @map("stripe_payment_id")
+  attended        Boolean?
+  surveyCompleted Boolean  @default(false) @map("survey_completed")
+  source          String   @default("manual")
+  notes           String?
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  workshop        Workshop @relation(fields: [workshopId], references: [id], onDelete: Cascade)
+  contact         Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@unique([workshopId, contactId])
+  @@index([contactId])
+  @@map("workshop_registrations")
+}
+
+model CoachingSession {
+  id              String    @id @default(uuid())
+  contactId       String    @map("contact_id")
+  tier            String
+  sessionNumber   Int       @map("session_number")
+  scheduledAt     DateTime? @map("scheduled_at")
+  completedAt     DateTime? @map("completed_at")
+  transcript      String?
+  summary         String?
+  actionItems     Json?     @map("action_items")
+  knowledgeFileUpdated Boolean @default(false) @map("knowledge_file_updated")
+  fathomRecordingId String? @map("fathom_recording_id")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  contact         Contact   @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  emailLogs       EmailLog[]
+
+  @@index([contactId])
+  @@map("coaching_sessions")
+}
+
+model ClientKnowledgeFile {
+  id              String    @id @default(uuid())
+  contactId       String    @unique @map("contact_id")
+  content         String    @default("")
+  lastSessionDate DateTime? @map("last_session_date")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  contact         Contact   @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@map("client_knowledge_files")
+}
+
+model Payment {
+  id              String   @id @default(uuid())
+  contactId       String?  @map("contact_id")
+  stripePaymentId String?  @unique @map("stripe_payment_id")
+  stripeCustomerId String? @map("stripe_customer_id")
+  amountCents     Int      @map("amount_cents")
+  currency        String   @default("usd")
+  productType     String?  @map("product_type")
+  stripeAccount   String?  @map("stripe_account")
+  status          String   @default("pending")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  contact         Contact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
+
+  @@index([contactId])
+  @@map("payments")
+}
+
+model Subscription {
+  id                    String    @id @default(uuid())
+  contactId             String?   @map("contact_id")
+  stripeSubscriptionId  String    @unique @map("stripe_subscription_id")
+  stripeAccount         String    @map("stripe_account")
+  productType           String?   @map("product_type")
+  status                String    @default("active")
+  currentPeriodStart    DateTime? @map("current_period_start")
+  currentPeriodEnd      DateTime? @map("current_period_end")
+  amountCents           Int       @map("amount_cents")
+  currency              String    @default("usd")
+  cancelledAt           DateTime? @map("cancelled_at")
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+
+  contact               Contact?  @relation(fields: [contactId], references: [id], onDelete: SetNull)
+
+  @@index([contactId])
+  @@map("subscriptions")
+}
+
+model EmailSequence {
+  id              String   @id @default(uuid())
+  name            String
+  triggerType     String   @map("trigger_type")
+  subject         String
+  bodyHtml        String   @map("body_html")
+  bodyText        String?  @map("body_text")
+  delayMinutes    Int      @default(0) @map("delay_minutes")
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  emailLogs       EmailLog[]
+
+  @@map("email_sequences")
+}
+
+model EmailLog {
+  id              String    @id @default(uuid())
+  contactId       String?   @map("contact_id")
+  sequenceId      String?   @map("sequence_id")
+  workshopId      String?   @map("workshop_id")
+  sessionId       String?   @map("session_id")
+  sentAt          DateTime  @default(now()) @map("sent_at")
+  resendMessageId String?   @map("resend_message_id")
+  status          String    @default("sent")
+
+  contact         Contact?        @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  sequence        EmailSequence?  @relation(fields: [sequenceId], references: [id], onDelete: SetNull)
+  workshop        Workshop?       @relation(fields: [workshopId], references: [id], onDelete: SetNull)
+  session         CoachingSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+
+  @@index([contactId])
+  @@index([workshopId])
+  @@map("email_log")
+}
+
+model ActivityLog {
+  id              String   @id @default(uuid())
+  contactId       String   @map("contact_id")
+  action          String
+  metadata        Json?
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  contact         Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@index([contactId, createdAt(sort: Desc)])
+  @@map("activity_log")
+}
