@@ -43,3 +43,4 @@ supabase/functions/.env.development
 
 # Dr. AI CRM
 *.local
+documents/
