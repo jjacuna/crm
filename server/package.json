@@ -1,0 +1,34 @@
+{
+  "name": "@dr-ai-crm/server",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.6.0",
+    "bcrypt": "^5.1.1",
+    "connect-redis": "^8.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "ioredis": "^5.6.1",
+    "jose": "^6.0.11",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "supertest": "^7.1.0",
+    "@types/supertest": "^6.0.2",
+    "@types/express-session": "^1.18.1",
+    "prisma": "^6.6.0",
+    "tsx": "^4.19.4",
+    "vitest": "^3.1.3"
+  }
+}
